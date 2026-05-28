@@ -16,7 +16,7 @@ services:
     
     # 3. 포트 매핑 (명령어에 있던 3000과 4321 포트)
     ports:
-      - "3000:3000"
+      - "3443:3443"
       # - "4321:4321"
     
     # 4. 볼륨 설정 ($PWD를 /app에 연결하여 로컬 수정사항 실시간 반영)
@@ -34,12 +34,14 @@ services:
     tty: true        # -t 옵션 (가상 터미널 할당)
     
     # 6. 실행 명령어 (sh로 진입하거나 bun dev 등 개발 서버 실행용)
-    command: /bin/sh
+    # command: /bin/sh
+    command: bun --watch index.ts
 
     
 # docker compose up -d
 # docker exec -it bun_dev /bin/sh
 # docker compose down
+# docker compose logs -f bun_dev
 
 
 # ssh -T git@github.com
