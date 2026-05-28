@@ -9,7 +9,7 @@ services:
     image: dev/bun
 
     # 현재 호스트의 UID와 GID를 컨테이너 내부로 전달
-    # user: "1000:1000"
+    user: "1000:1000"
 
     # 2. 컨테이너 이름 설정
     container_name: bun_dev
@@ -26,7 +26,7 @@ services:
     # 중요: 터널 인증 정보 및 설정 보존용 볼륨
       # - ./vscode/cli:/root/.vscode/cli
       # - ./vscode-server:/root/.vscode-server
-      # - .:/app
+      - .:/app
     
     # 5. 작업 디렉토리 및 터미널 설정
     working_dir: /app
