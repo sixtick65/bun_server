@@ -1,0 +1,45 @@
+services:
+  bun_dev:
+    # 1. 빌드 설정 (현재 디렉토리의 Dockerfile을 사용하여 이미지 생성)
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    # 이미지 이름설정
+    image: dev/bun
+
+    # 현재 호스트의 UID와 GID를 컨테이너 내부로 전달
+    # user: "1000:1000"
+
+    # 2. 컨테이너 이름 설정
+    container_name: bun_dev
+    
+    # 3. 포트 매핑 (명령어에 있던 3000과 4321 포트)
+    ports:
+      - "3000:3000"
+      # - "4321:4321"
+    
+    # 4. 볼륨 설정 ($PWD를 /app에 연결하여 로컬 수정사항 실시간 반영)
+    volumes:
+      - ~/.gitconfig:/root/.gitconfig:ro  # Git 설정 공유 (읽기 전용)
+      - ~/.ssh:/root/.ssh:ro  # SSH 키 공유 (읽기 전용)
+    # 중요: 터널 인증 정보 및 설정 보존용 볼륨
+      # - ./vscode/cli:/root/.vscode/cli
+      # - ./vscode-server:/root/.vscode-server
+      # - .:/app
+    
+    # 5. 작업 디렉토리 및 터미널 설정
+    working_dir: /app
+    stdin_open: true  # -i 옵션 (표준 입력 유지)
+    tty: true        # -t 옵션 (가상 터미널 할당)
+    
+    # 6. 실행 명령어 (sh로 진입하거나 bun dev 등 개발 서버 실행용)
+    command: /bin/sh
+
+    
+# docker compose up -d
+# docker exec -it bun_dev /bin/sh
+# docker compose down
+
+
+# ssh -T git@github.com
