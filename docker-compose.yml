@@ -21,8 +21,8 @@ services:
     
     # 4. 볼륨 설정 ($PWD를 /app에 연결하여 로컬 수정사항 실시간 반영)
     volumes:
-      - ~/.gitconfig:/root/.gitconfig:ro  # Git 설정 공유 (읽기 전용)
-      - ~/.ssh:/root/.ssh:ro  # SSH 키 공유 (읽기 전용)
+      - ~/.gitconfig:/home/bun/.gitconfig:ro  # Git 설정 공유 (읽기 전용)
+      - ~/.ssh:/home/bun/.ssh:ro  # SSH 키 공유 (읽기 전용)
     # 중요: 터널 인증 정보 및 설정 보존용 볼륨
       # - ./vscode/cli:/root/.vscode/cli
       # - ./vscode-server:/root/.vscode-server
