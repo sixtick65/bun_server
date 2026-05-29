@@ -10,10 +10,10 @@ console.log(router.routes);
 
 const server = Bun.serve({
   port: 3443,
-  // tls: {
-  //   cert: Bun.file("./cert.pem"), // 공개키 인증서 파일
-  //   key: Bun.file("./key.pem"),   // 개인키 파일
-  // },
+  tls: {
+    cert: Bun.file("./certs/fullchain.pem"),
+    key: Bun.file("./certs/privkey.pem"),
+  },
 
   // routes: {
   //   // Static route for the root path
@@ -81,4 +81,4 @@ const server = Bun.serve({
   },
 });
 
-console.log(`Server running at ${server.url}`);
+console.log(`Server running at ${server.url}`); 
