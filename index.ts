@@ -1,3 +1,4 @@
+import { verifyToken } from "./src/lib/jwt";
 process.env.TZ = "Asia/Seoul";
 
 const router = new Bun.FileSystemRouter({
@@ -11,7 +12,7 @@ console.log(router.routes);
 const server = Bun.serve({
   port: 3443,
   tls: {
-    cert: Bun.file("./certs/fullchain.pem"),
+    cert: Bun.file("./certs/fullchain.pem"),  
     key: Bun.file("./certs/privkey.pem"),
   },
 
@@ -48,15 +49,29 @@ const server = Bun.serve({
 
   // 라우트에 걸리지 않으면 404 Not Found 응답을 반환하는 기본 핸들러
   async fetch(req, server) {
-    console.log("\n", new Date().toLocaleString());
+    console.log("\n", new Date().toLocaleString());   
     console.log(server.requestIP(req)?.address);
 
     const url = new URL(req.url);
-    console.log("요청 URL:", url.pathname);
+    console.log("요청 URL:", url.pathname + url.search);
     if(url.pathname === "/favicon.ico") {
       // return new Response(Bun.file("/favicon.ico"));
       return new Response(null, { status: 204 });
     }
+
+    // 로그인 상태가 아니면 로그인 페이지로 리디렉션
+    const verifyResult = await verifyToken(req);
+    // if(url.searchParams.get("login") === "success"){
+    
+      // 쿠키가 등록 되는 와중이라고 치고 한번 그냥 보낸다~
+    // }else{
+      if (!verifyResult.success && url.pathname !== "/login") {
+        
+        console.log('인증 실패:', verifyResult.error);
+        const previousUrl = url.pathname + url.search; // 현재 요청 URL을 저장
+        return Response.redirect("/login?prev=" + encodeURIComponent(previousUrl)); // 로그인 페이지로 리디렉션하면서 이전 URL을 쿼리 파라미터로 전달
+      }
+    // }
 
     const matchPath = router.match(url.pathname);
     console.log("매칭된 라우트 핸들러:", matchPath);
