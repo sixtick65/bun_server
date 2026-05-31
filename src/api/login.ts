@@ -1,5 +1,5 @@
-import { getUserByEmail, createUser } from '../src/db/users';
-import { createToken } from '../src/lib/jwt';
+import { getUserByEmail, createUser } from '../db/users';
+import { createToken } from '../lib/jwt';
 
 interface GoogleTokenResponse {
     access_token: string;

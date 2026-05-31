@@ -9,4 +9,5 @@ export const usersTable = sqliteTable("users_table", {
 
 
 
+
 // bun drizzle-kit push
